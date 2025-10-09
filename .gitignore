@@ -1,8 +1,15 @@
-# Environment and secrets
+# Environment files - NEVER COMMIT THESE
 .env
 .env.local
+.env.*.local
+*.env
+!.env.example
+
+# API Keys and Secrets
 *.key
+*.pem
 secrets/
+credentials/
 
 # Python
 __pycache__/
@@ -13,6 +20,7 @@ __pycache__/
 venv/
 env/
 trading-bot-env/
+Miniconda3-latest-Linux-x86_64.sh
 *.egg-info/
 dist/
 build/
@@ -29,22 +37,31 @@ build/
 Thumbs.db
 desktop.ini
 
-# Logs
+# Logs and Databases
 *.log
 logs/
 *.sqlite
+*.db
+research_tasks.db
 
-# Knowledge base (optional - you might want to include some sample docs)
+# Knowledge base (optional - include sample structure)
 knowledge_base/*
 !knowledge_base/.gitkeep
 !knowledge_base/README.md
+
+# Backups
+*.backup
+*.bak
+*.old
 
 # Temporary files
 tmp/
 temp/
 *.tmp
-*.bak
 
 # Flask
 instance/
 .webassets-cache
+
+# Scripts that might contain credentials
+setup_env.sh

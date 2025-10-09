@@ -304,7 +304,7 @@ Reduce knowledge silos
 Environment Variables
 
 # .env file
-ANTHROPIC_API_KEY=sk-ant-api03-...
+ANTHROPIC_API_KEY=your-api-key-here
 MODEL_NAME=claude-3-5-haiku-20241022  # Optional
 MAX_TOKENS=4096                       # Optional
 
