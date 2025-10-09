@@ -1,0 +1,50 @@
+# Environment and secrets
+.env
+.env.local
+*.key
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+trading-bot-env/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+*.sqlite
+
+# Knowledge base (optional - you might want to include some sample docs)
+knowledge_base/*
+!knowledge_base/.gitkeep
+!knowledge_base/README.md
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Flask
+instance/
+.webassets-cache

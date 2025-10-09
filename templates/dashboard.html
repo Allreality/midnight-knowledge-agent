@@ -1,0 +1,210 @@
+cat > templates/dashboard.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h2>Knowledge Base</h2>
+            </div>
+            
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-view="overview">
+                    <i class="fas fa-chart-line"></i> Overview
+                </a>
+                <a href="#" class="nav-item" data-view="tasks">
+                    <i class="fas fa-tasks"></i> Research Queue
+                    <span class="badge" id="pending-count">0</span>
+                </a>
+                <a href="#" class="nav-item" data-view="documents">
+                    <i class="fas fa-file-alt"></i> Documents
+                </a>
+                <a href="#" class="nav-item" data-view="search">
+                    <i class="fas fa-search"></i> Search
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn-primary btn-block" onclick="showNewTaskModal()">
+                    <i class="fas fa-plus"></i> New Task
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h1 id="page-title">Dashboard Overview</h1>
+                <button class="btn btn-icon" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </header>
+
+            <!-- Overview View -->
+            <div id="view-overview" class="view active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-total">0</div>
+                            <div class="stat-label">Total Documents</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-completed">0</div>
+                            <div class="stat-label">Completed Tasks</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-pending">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-size">0 KB</div>
+                            <div class="stat-label">Total Size</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Recent Documents</h3>
+                        <div id="recent-documents"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Categories</h3>
+                        <div id="categories"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks View -->
+            <div id="view-tasks" class="view">
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                <div id="tasks-container"></div>
+            </div>
+
+            <!-- Documents View -->
+            <div id="view-documents" class="view">
+                <div class="documents-header">
+                    <select id="category-filter" class="form-control" onchange="loadDocuments()">
+                        <option value="">All Categories</option>
+                        <option value="midnight">Midnight</option>
+                        <option value="cardano">Cardano</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="zkproofs">ZK Proofs</option>
+                        <option value="smart_contracts">Smart Contracts</option>
+                        <option value="architecture">Architecture</option>
+                        <option value="competitors">Competitors</option>
+                        <option value="research">Research</option>
+                    </select>
+                    <input type="number" id="limit-input" class="form-control" value="50" min="10" max="200">
+                    <button class="btn btn-primary" onclick="loadDocuments()">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+                <div id="documents-container" class="documents-grid"></div>
+            </div>
+
+            <!-- Search View -->
+            <div id="view-search" class="view">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search...">
+                    <button class="btn btn-primary" onclick="performSearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+                <div id="search-results"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- New Task Modal -->
+    <div id="new-task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Research Task</h2>
+                <button class="close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Topic *</label>
+                    <input type="text" id="task-topic" class="form-control" placeholder="e.g., Midnight Smart Contracts">
+                </div>
+                
+                <div class="form-group">
+                    <label>Context</label>
+                    <textarea id="task-context" class="form-control" rows="3" placeholder="Additional focus areas or constraints..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Source Type</label>
+                    <select id="task-source-type" class="form-control">
+                        <option value="manual">Manual Research</option>
+                        <option value="webpage">Webpage</option>
+                        <option value="youtube">YouTube Video</option>
+                        <option value="medium">Medium Article</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Source URL (optional)</label>
+                    <input type="url" id="task-source-url" class="form-control" placeholder="https://...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="createTask()">
+                    <i class="fas fa-plus"></i> Create Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div id="document-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="doc-title">Document</h2>
+                <button class="close" onclick="closeDocumentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="doc-content" class="document-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
+EOF
