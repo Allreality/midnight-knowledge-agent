@@ -1,4 +1,4 @@
-cat > README.md << 'EOF'
+
 # 🧠 Knowledge Base Multi-Agent System
 
 An intelligent, autonomous research and documentation system powered by Claude AI for blockchain infrastructure knowledge management.
@@ -51,7 +51,7 @@ Research Files    Documentation     Index & Analysis
 #### 1. Research Curator Agent 🔬
 - Gathers information on specified topics
 - Uses Claude AI for deep research
-- Saves raw findings to knowledge base
+- Saves raw findings to the knowledge base
 - Tracks sources and metadata
 
 #### 2. Documentation Writer Agent ✍️
@@ -114,11 +114,11 @@ Launch Web Dashboard
 python web_dashboard.py
 
 ```bash
-# 1. Clone or create project directory if it is not already their
+# 1. Clone or create a project directory if it is not already there
 mkdir ~/knowledgeagent
 cd ~/knowledgeagent
 
-# 2. Create virtual environment
+# 2. Create a virtual environment
 python -m venv trading-bot-env
 source trading-bot-env/bin/activate  # On Windows: trading-bot-env\Scripts\activate
 
@@ -128,7 +128,7 @@ pip install anthropic flask flask-cors markdown2 python-dotenv
 # 4. Set up environment variables
 echo "ANTHROPIC_API_KEY='your-api-key-here'" > .env
 
-# 5. Create directory structure
+# 5. Create a directory structure
 mkdir -p knowledge_base/{research,midnight,cardano,healthcare,zkproofs,architecture,smart_contracts,competitors}
 mkdir -p templates static/css static/js
 
@@ -329,7 +329,7 @@ KnowledgeBaseMaintainerAgent.analyze_knowledge_gaps()
 Overview
 
 Real-time stats - Documents, tasks, storage
-Recent documents - Quick access to latest research
+Recent documents - Quick access to the latest research
 Category breakdown - Visual progress indicators
 Auto-refresh - Updates every 30 seconds
 
@@ -372,7 +372,7 @@ for topic in topics:
         'source_url': ''
     })
 Scheduled Updates
-Set up cron job for daily research:
+Set up a cron job for daily research:
 # crontab -e
 0 9 * * * cd ~/knowledge-agent-system && python daily_research.py
 
@@ -435,6 +435,7 @@ Storage: ~5-10 KB per document
 - 🚫 This system makes API calls - be aware of rate limits and costs
 
 ## 💰 Cost Considerations
+- ** x402 implemented for agent-to-agent transactions
 
 Approximate costs using Claude 3.5 Haiku:
 - **Per research task:** ~$0.01-0.05 USD
